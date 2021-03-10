@@ -16,6 +16,10 @@ class GroupController extends Controller
         //
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Contact::class);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -88,6 +92,6 @@ class GroupController extends Controller
           //return view('/contact/update',['data1'=>$group->all()]);
     }
 
-  
+
 
 }

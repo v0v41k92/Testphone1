@@ -8,6 +8,7 @@ use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use App\Models\Group;
 use Collective\Html\FormFacade;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller{
 
@@ -17,6 +18,10 @@ class ContactController extends Controller{
   //return view('index',['contact' => $contact->all()]);
 
   }
+  public function groups()
+{
+    return $this->belongsToMany(Group::class);
+}
 
   public function submit(ContactRequest $req){
 
@@ -117,17 +122,17 @@ function createXMLAction(){
   $xml->save($_SERVER["DOCUMENT_ROOT"].'/contact.xml');
 }
 
-public function uploadFile($localFilename, $localPath='/uploads/'){
+public function uploadsFile($localFilename, $localPath='/uploads/'){
   $maxSize = 2*1024*1024;
     $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
     $pathInfo = pathinfo($localFilename);
     if($ext != $pathInfo['extension']) return false;
-    $newFileName = $pathInfo['filenae'].'_'.time().'.'.$pathInfo['extension'];
+    $newFileName = $pathInfo['filename'].'_'.time().'.'.$pathInfo['extension'];
     if($_FILES["filename"]["size"] > $maxSize) return false;
     $path = $_SERVER['DOCUMENT_ROOT'].$localPath;
-      if (! file_exists($path)){
+      /*if (! file_exists($path)){
         mkdir($path);
-      }
+      }*/
 
 if(is_uploaded_file($_FILES['filename']['tmp_name'])){
   $res = move_uploaded_file($_FILES['filename']['tmp_name'], $path.$newFileName);
@@ -138,33 +143,46 @@ else {return false;}
 
 function loadfromxmlAction(){
 
-$successUploadFileName = uploadFile('import_contact.xml','/public/uploads/');
-dd('ghbdtn');
+$successUploadFileName = self::uploadsFile('import_contact.xml','/uploads/');
+
 if(!$successUploadFileName){
   echo'Error Upload File contact.xml';
   return;
 }
 
-      $xmlFile = $_SERVER["DOCUMENT_ROOT"].'/public/uploads/'.$successUploadFileName;
+      $xmlFile = $_SERVER["DOCUMENT_ROOT"].'/uploads/'.$successUploadFileName;
 
       $xmpContacts = simplexml_load_file($xmlFile);
 
       $contacts = array(); $i=0;
       foreach ($xmpContacts as $contact) {
-        $contacts[i]['id'] = intval($contact->id);
-        $contacts[i]['name'] = htmlentities($contact->name);
-        $contacts[i]['phonenumber'] = htmlentities($contact->number);
-        $contacts[i]['email'] = htmlentities($contact->email);
-        $contacts[i]['group'] = htmlentities($contact->group);
+        $contacts[$i]['id'] = intval($contact->id);
+        $contacts[$i]['name'] = htmlentities($contact->name);
+        $contacts[$i]['number'] = htmlentities($contact->phonenumber);
+        $contacts[$i]['email'] = htmlentities($contact->email);
+        $contacts[$i]['group'] = htmlentities($contact->group);
         $i++;
       }
-      $res = insertImportContacts($contacts);
+
+      $res = self::insertImportContacts($contacts);
       if($res){
-        redirect('home');
+          return redirect()->route('home')->with('succes','Контакты импортированны');
       }
   }
 
+  function insertImportContacts($aContacts){
+if (! is_array($aContacts)) return false;
+    $sql="INSERT INTO contacts(`id`,`name`,`number`,`email`,`group`) VALUES";
+    $cnt = count($aContacts);
+    for($i=0; $i<$cnt;$i++){
+      if($i>0)$sql.=', ';
+      $sql.="('".implode("', '", $aContacts[$i])."')";
+    }
+    //dd($sql);
+    $rs = DB::INSERT($sql);
+    return $rs;
 
+  }
 
 
 
