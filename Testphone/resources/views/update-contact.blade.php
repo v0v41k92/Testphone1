@@ -35,8 +35,8 @@
 
       </fieldset>
 
-    <button type="submit" clas="btn btn-succes">Обновить</button>
+    <button type="submit" class="btn btn-success">Обновить</button>
 
   </form>
-  <a href="{{route('home')}}"><button type="submit" clas="btn btn-succes">Назад</button></a>
+  <a href="{{route('home')}}"><button type="submit" class="btn btn-danger">Назад</button></a>
 @endsection

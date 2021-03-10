@@ -18,11 +18,10 @@ function createXML(){
       }
   });
 }
-function CheckAll(obj){
 
+function CheckAll(obj){
   'use strict';
-  var items = obj.form.getElementsByTagName("input"),
-      len, i;
+  var items = obj.sector.getElementsByTagName("input"),len, i;
   for (i = 0, len = items.length; i < len; i += 1) {
     if (items.item(i).type && items.item(i).type === "checkbox") {
       if (obj.checked) {
@@ -33,4 +32,24 @@ function CheckAll(obj){
     }
 
 }
+}
+
+function OptionsSelected(me){
+  var idel =me.id;
+  var id =me.value;
+el=document.getElementById("ckeck"+id);
+    el.addEventListener('change', function ChangeValue(e){
+     document.getElementById("submit"+id).disabled = !e.target.checked;
+    });
+}
+function GroupSelected(val){
+  var gname= val.value;
+  alert(gname);
+  $.ajax({
+        type: "POST",
+        url: '/',
+        data: gname,
+        success: function(data)
+            {alert("success!");                    }
+  });
 }

@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use App\Models\Group;
+use Collective\Html\FormFacade;
 
 class ContactController extends Controller{
 
+  public function index(){
+
+  //$contact =new Contact;
+  //return view('index',['contact' => $contact->all()]);
+
+  }
 
   public function submit(ContactRequest $req){
 
@@ -79,6 +86,13 @@ public function contactDelete($id){
     return redirect()->route('home')->with('succes','Контакт удален');
 }
 
+function GroupSelectedAction(Request $req){
+  $gn = $req->gn;
+  dd($gname);
+  $group = new Group;
+  $userg = Contact::where('group','LIKE',"%{$gn}%");
+  return view ('/',compact('userg'));
+}
 
 function createXMLAction(){
 
@@ -103,44 +117,36 @@ function createXMLAction(){
   $xml->save($_SERVER["DOCUMENT_ROOT"].'/contact.xml');
 }
 
-function uploadFile($localFilename, $localPath='/upload/'){
-$maxSize = 2*1024*1024;
-
-$ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
-
-$pathInfo = pathinfo($localFilename);
-
-if($ext != $pathInfo['extension']) return false;
-
-$newFileName = $pathInfo['filenae'].'_'.time().'.'.$pathInfo['extension'];
-
-if($_FILES["filename"]["size"] > $maxSize){return false;}
-
-$path = $_SERVER['DOCUMENT_ROOT'].$localPath;
-if (! file_exists($path)){
-  mkdir($path);
-}
+function uploadFile($localFilename, $localPath='/uploads/'){
+  $maxSize = 2*1024*1024;
+    $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
+    $pathInfo = pathinfo($localFilename);
+    if($ext != $pathInfo['extension']) return false;
+    $newFileName = $pathInfo['filenae'].'_'.time().'.'.$pathInfo['extension'];
+    if($_FILES["filename"]["size"] > $maxSize) return false;
+    $path = $_SERVER['DOCUMENT_ROOT'].$localPath;
+      if (! file_exists($path)){
+        mkdir($path);
+      }
 
 if(is_uploaded_file($_FILES['filename']['tmp_name'])){
   $res = move_uploaded_file($_FILES['filename']['tmp_name'], $path.$newFileName);
-  return($res==true)?$newFileName:false;
-} else {
-    return false;
-  }
+  return($res==true)?$newFileName:false;}
+else {return false;}
 
 }
 
 function loadfromxmlAction(){
 
-  $successUploadFileName = uploadFile('import_contact.xml','/xml/import/');
+  $successUploadFileName = uploadFile('import_contact.xml','/public/uploads/');
 
 if(!$successUploadFileName){
   echo'Error Upload File contact.xml';
   return;
 }
 
-      $xmlFile = $_SERVER["DOCUMENT_ROOT"].'/xml/import/'.$successUploadFileName;
-dd($xmlFile);
+      $xmlFile = $_SERVER["DOCUMENT_ROOT"].'/public/uploads/'.$successUploadFileName;
+
       $xmpContacts = simplexml_load_file($xmlFile);
 
       $contacts = array(); $i=0;

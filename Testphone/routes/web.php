@@ -24,12 +24,13 @@ Route::get('/contact/delete={id}', 'App\Http\Controllers\ContactController@conta
 Route::post('/contact/update={id}', 'App\Http\Controllers\ContactController@contactUpdateSucces')->name('contact-update-succes');
 
 Route::get('/contact/edit={id}', 'App\Http\Controllers\ContactController@contactEdit')->name('contact-edit');
-Route::get('/', 'App\Http\Controllers\ContactController@allData')->name('home');
+Route::get('/', 'App\Http\Controllers\ContactController@allData','App\Http\Controllers\ContactController@GroupSelectedAction')->name('home');
 
 
 Route::get('/xml', 'App\Http\Controllers\ContactController@createXMLAction');
-//Route::post('/xml', 'App\Http\Controllers\ContactController@createXMLAction')->name('xml');
+
 Route::get('/loadfromxml','App\Http\Controllers\ContactController@loadfromxmlAction');
+Route::post('/loadfromxml','App\Http\Controllers\ContactController@loadfromxmlAction');
 
 Route::post('/add_contact/submit', 'App\Http\Controllers\ContactController@submit')->name('contact-form');
 
@@ -37,5 +38,5 @@ Route::get('/search', 'App\Http\Controllers\ContactController@Search')->name('se
 Route::get('/group', 'App\Http\Controllers\ContactController@SearchGroup')->name('group');
 Route::post('/group', 'App\Http\Controllers\ContactController@allData')->name('group');
 
-Route::get('/uploadfile','App\Http\Controllers\UploadFileController@index')->name('upload');
-Route::post('/uploadfile','App\Http\Controllers\UploadFileController@showUploadFile');
+Route::get('/uploadfile','App\Http\Controllers\UploadFileController@index','App\Http\Controllers\ContactController@uploadFile')->name('upload');
+Route::post('/uploadfile','App\Http\Controllers\UploadFileController@showUploadFile', 'App\Http\Controllers\ContactController@loadfromxmlAction');

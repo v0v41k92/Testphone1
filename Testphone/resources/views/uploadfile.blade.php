@@ -11,5 +11,11 @@
          echo Form::close();
       ?>
 
-      
+
+
+      <form action="/loadfromxml/" method="post" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="filename">
+        <input type="submit" name="" value="Загрузить">
+      </form>
 @endsection

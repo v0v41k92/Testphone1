@@ -1,0 +1,108 @@
+.tabs__caption {
+	/* display: -webkit-flex; */
+	display: -ms-flexbox;
+	display: flex;
+	/* -webkit-flex-wrap: wrap; */
+	-ms-flex-wrap: wrap;
+	/* flex-wrap: wrap; */
+	list-style: none;
+	/* position: relative; */
+	/* margin: -1px 0 0 -1px; */
+}
+ul.tabs__caption {
+    /* margin: 0 !important; */
+    /* background: #0076a3; */
+    /* height: 30px; */
+    width: 100%;
+    border-bottom: solid 4px #007bff;
+}
+.tabs__caption li:last-child:before {
+	content: '';
+	position: absolute;
+	bottom: -5px;
+	left: 0;
+	right: -2px;
+	z-index: -1;
+	height: 5px;
+	/*background: #7DCA86;*/
+}
+.tabs__caption:after {
+	content: '';
+	display: table;
+	clear: both;
+}
+.tabs__caption li {
+    padding: 9px 15px;
+    /* background: #0076a3; */
+    /* color: #FFF; */
+    /* position: relative; */
+    /* border: solid #b1b1b1; */
+    /* border-width: 2px 2px 0; */
+    text-align: center;
+    /* width: 31%; */
+    /* margin-bottom: -15px; */
+}
+.tabs__caption li:not(.active) {
+	cursor: pointer;
+}
+.tabs__caption li:not(.active):hover {
+    /* background: #ffffff; */
+    /* border-color: #717171; */
+    -webkit-transform: scale(1.1);
+}
+.tabs__caption .active {
+    background: #FFF;
+    color: #fff;
+    border-color: #0076a3;
+    /* position: absolute; */
+    bottom: -5px;
+    left: 0;
+    right: -2px;
+    z-index: -1;
+    height: -1px;
+    background: #007bff;
+}
+.tabs__caption .active:after {
+	content: '';
+	position: absolute;
+	bottom: -5px;
+	left: 0;
+	right: 0;
+	height: 5px;
+	background: #FFF;
+}
+.tabs__content {
+	width: 100%;
+    display: none;
+    background: #FFF;
+    /* border: 2px solid #0076a3; */
+    /* border-radius: 0 0px 5px 5px; */
+    padding: 7px 15px;
+}
+.tabs__content.active {
+	display: block;
+}
+.news_tab {
+    width: auto;
+    height: 95px;
+border-bottom: 1px #357bb7 solid;
+}
+h5.row {
+    margin: 5px 0px 0px 100px;
+    padding-top: 10px;
+}
+.date2 {
+    margin-left: 100px;
+    font-size: 8px;
+    color: #a2a2a2;
+}
+#tag a:hover {
+    font-size: 25px !important;
+    text-decoration: none;
+    color: #0076a3;
+    text-shadow: 1px 1px 1px #8c8b8b;
+}
+.tabs {
+	max-width: 1170px;
+	margin: 0 0 30px;
+}

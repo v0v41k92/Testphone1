@@ -6,13 +6,9 @@
 <h1>Результат поиска</h1>
 <div class="row col-md-12">
   <form action="{{route('search')}}" method="get">
-  <div class="form-group col-md-10">
-    <label for="name">Поиск:</label>
+  <div class="form-group">
     <input type="text" name="s" id="s" placeholder="Что нужно искать?" class="form-control"></label>
-  </div>
-
-  <div class="form-group col-md-2">
-    <button type="submit" clas="btn btn-primary btn-block">Поиск</button>
+    <button type="submit" class="btn btn-primary btn-block">Поиск</button>
   </div>
 </form>
 </div>
