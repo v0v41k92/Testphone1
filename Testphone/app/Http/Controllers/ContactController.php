@@ -117,7 +117,7 @@ function createXMLAction(){
   $xml->save($_SERVER["DOCUMENT_ROOT"].'/contact.xml');
 }
 
-function uploadFile($localFilename, $localPath='/uploads/'){
+public function uploadFile($localFilename, $localPath='/uploads/'){
   $maxSize = 2*1024*1024;
     $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
     $pathInfo = pathinfo($localFilename);
@@ -138,8 +138,8 @@ else {return false;}
 
 function loadfromxmlAction(){
 
-  $successUploadFileName = uploadFile('import_contact.xml','/public/uploads/');
-
+$successUploadFileName = uploadFile('import_contact.xml','/public/uploads/');
+dd('ghbdtn');
 if(!$successUploadFileName){
   echo'Error Upload File contact.xml';
   return;
