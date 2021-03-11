@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use App\Models\Group;
+use App\Models\ContactGroup;
 use Collective\Html\FormFacade;
 use Illuminate\Support\Facades\DB;
 
@@ -18,10 +19,7 @@ class ContactController extends Controller{
   //return view('index',['contact' => $contact->all()]);
 
   }
-  public function groups()
-{
-    return $this->belongsToMany(Group::class);
-}
+
 
   public function submit(ContactRequest $req){
 
@@ -29,8 +27,11 @@ class ContactController extends Controller{
     $contact->name = $req->input('name');
     $contact->number = $req->input('number');
     $contact->email = $req->input('email');
-    $contact->group = implode(",",$req->group);
     $contact->save();
+    $contact->groups()-> attach($req->group);
+    foreach (  $contact->groups()->get() as $group) {
+      var_dump($group->name);
+    }
 
     return redirect()->route('home')->with('succes','Контакт добавлен');
 
@@ -46,13 +47,17 @@ class ContactController extends Controller{
     return view ('/Search',compact('user'));
   }
 
-  public function SearchGroup(Request $req){
+  /*public function SearchGroup(Request $req){
+
     $q = $req->q;
-    $group = new Group;
-    $user = Contact::where('group','LIKE',"%{$q}%")
-                  -> orderBy('name')->paginate(10);
-    return view ('/group',compact('user'), ['group'=>$group->all()]);
-  }
+    $group = Group::find($q);
+    $contacts = $group->contacts;
+    return view ('/group',compact('contacts'), ['groups'=>$group->all()]);
+
+    //$group = new Group;
+    //$user = Contact::where('group','LIKE',"%{$q}%")-> orderBy('name')->paginate(10);
+    //return view ('/group',compact('user'), ['group'=>$group->all()]);
+  }*/
 
   public function allData(){
     $contact = new Contact;
@@ -80,24 +85,30 @@ class ContactController extends Controller{
     $contact->name = $req->input('name');
     $contact->number = $req->input('number');
     $contact->email = $req->input('email');
-    $contact->group = implode(",", $req->group);
     $contact->save();
-
+    $contact->groups()-> attach($req->group);
+    foreach (  $contact->groups()->get() as $group) {
+      var_dump($group->name);
+    }
     return redirect()->route('home')->with('succes','Контакт обновлен');
   }
 
 public function contactDelete($id){
-  Contact::find($id)->delete();
+  $contact= Contact::find($id);
+  $contact->groups()->detach($contact);
+  $contact->Delete();
+
     return redirect()->route('home')->with('succes','Контакт удален');
+      dd($contact);
 }
 
-function GroupSelectedAction(Request $req){
+/*function GroupSelectedAction(Request $req){
   $gn = $req->gn;
   dd($gname);
   $group = new Group;
   $userg = Contact::where('group','LIKE',"%{$gn}%");
   return view ('/',compact('userg'));
-}
+}*/
 
 function createXMLAction(){
 
@@ -115,8 +126,6 @@ function createXMLAction(){
       $xmlphone->appendChild($xml->createTextNode($contacts->number));
       $xmlmail = $xmpContact->appendChild($xml->createElement('email'));
       $xmlmail->appendChild($xml->createTextNode($contacts->email));
-      $xmlgroup = $xmpContact->appendChild($xml->createElement('group'));
-      $xmlgroup->appendChild($xml->createTextNode($contacts->group));
   }
 
   $xml->save($_SERVER["DOCUMENT_ROOT"].'/contact.xml');
@@ -160,7 +169,6 @@ if(!$successUploadFileName){
         $contacts[$i]['name'] = htmlentities($contact->name);
         $contacts[$i]['number'] = htmlentities($contact->phonenumber);
         $contacts[$i]['email'] = htmlentities($contact->email);
-        $contacts[$i]['group'] = htmlentities($contact->group);
         $i++;
       }
 
@@ -172,7 +180,7 @@ if(!$successUploadFileName){
 
   function insertImportContacts($aContacts){
 if (! is_array($aContacts)) return false;
-    $sql="INSERT INTO contacts(`id`,`name`,`number`,`email`,`group`) VALUES";
+    $sql="INSERT INTO contacts(`id`,`name`,`number`,`email`) VALUES";
     $cnt = count($aContacts);
     for($i=0; $i<$cnt;$i++){
       if($i>0)$sql.=', ';
@@ -183,7 +191,6 @@ if (! is_array($aContacts)) return false;
     return $rs;
 
   }
-
 
 
 

@@ -6,31 +6,18 @@
 <div id="message"></div>
 <h1>Телефонная книга</h1>
 <div class="row">
-
-<form action="{{route('group')}}" method="get">
-@csrf
-<div class="form-group">
-  <label for="g">Выберите группу:</br></label>
-  <select class="groupContact form-control" name="q" onchange="GroupSelected(this)">
-    @foreach($group as $el)
-      <option value="{{$el->name}}">{{$el->name}}</option>
-    @endforeach
-  </select>
-  <button type="submit" class="btn btn-primary btn-block">Просмотр</button>
-</div>
-</form>
+  
 </div>
 
 <div class="tabs row">
 <ul class="tabs__caption">
   <li class="active">Контакты</li>
   @foreach($group as $el)
-    <li  name="q" value="{{$el->name}}">{{$el->name}}</li>
+    <li  name="q" value="{{$el->id}}" >{{$el->name}}</li>
   @endforeach
 </ul>
 
 <div class="tabs__content  active">
-<sector>
 <table class="table table-hover table-striped">
  <thead>
   <tr>
@@ -55,9 +42,8 @@
    @endforeach
  </tbody>
 </table>
-
 </div>
-</sector>
+
 
 @foreach($group as $el)
 <div class="tabs__content" id="{{$el->name}}">
@@ -67,21 +53,23 @@
        <th scope="col">Имя</th>
        <th scope="col">Номер</th>
        <th scope="col">Електронная почта</th>
-       <th scope="col">Группы</th>
     </tr>
    </thead>
    <tbody>
+  @php
+     $group = App\Models\Group::find($el->id);
+     $contacts = $group->contacts;
+     //dd($contacts);
+  @endphp
 
-  @foreach($data as $elem)
+  @foreach($contacts as $elem)
 
-  @if($el->name == $elem->group)
   <tr>
    <td>{{$elem->name }}</td>
    <td>{{$elem->number}}</td>
    <td>{{$elem->email}}</td>
-   <td>{{$elem->group}}</td>
   </tr>
-  @endif
+
   @endforeach
 </tbody>
 </table>
@@ -89,5 +77,4 @@
 @endforeach
 
 
-<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 @endsection

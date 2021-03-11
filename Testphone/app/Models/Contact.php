@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model{
 
-
+  public function groups()
+  {
+    return $this->belongsToMany(Group::class);
+  }
 }

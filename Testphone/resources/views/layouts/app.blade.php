@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="/css/app.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  
 
 </head>
 <body>
@@ -29,7 +29,7 @@
 </div>
 
   @include('inc.footer')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+
 <script src="js/jquery-3.5.1.min.js"></script>
 <script src="/js/app.js" ></script>
 <script src="/js/tabs_click-to-activate.js" ></script>

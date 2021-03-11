@@ -42,14 +42,3 @@ el=document.getElementById("ckeck"+id);
      document.getElementById("submit"+id).disabled = !e.target.checked;
     });
 }
-function GroupSelected(val){
-  var gname= val.value;
-  alert(gname);
-  $.ajax({
-        type: "POST",
-        url: '/',
-        data: gname,
-        success: function(data)
-            {alert("success!");                    }
-  });
-}

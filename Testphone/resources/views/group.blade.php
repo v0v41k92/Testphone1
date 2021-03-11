@@ -7,16 +7,16 @@
 <div class="form-group">
 
 <form action="{{route('group')}}" method="get">
-  <label for="g">Выберите группу:</br></label>
+  <label for="q">Выберите группу:</br></label>
   <select name="q">
-          @foreach($group as $el)
-            <option value="{{$el->name}}">{{$el->name}}</option>
+          @foreach($groups as $el)
+            <option value="{{$el->id}}">{{$el->name}}</option>
           @endforeach
   </select>
   <button type="submit" clas="btn btn-primary btn-block">Просмотр</button>
 </form>
 </div>
-@if(count($user))
+@if(count($contacts))
 
 <div class="table-responsive">
 <table class="table table-hover table-striped">
@@ -25,16 +25,14 @@
    <th scope="col">Имя</th>
    <th scope="col">Номер</th>
    <th scope="col">Електронная почта</th>
-   <th scope="col">Группа</th>
   </tr>
  </thead>
  <tbody>
-   @foreach($user as $el)
+   @foreach($contacts as $el)
    <tr>
-    <td>{{ $el->name }}</td>
+    <td>{{$el->name }}</td>
     <td>{{$el->number}}</td>
     <td>{{$el->email}}</td>
-    <td>{{$el->group}}</td>
    </tr>
 
    @endforeach

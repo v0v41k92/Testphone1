@@ -29,7 +29,7 @@
 
           @foreach($data as $el)
             <div class="checkbox">
-              <input type="checkbox" name="group[]"  value="{{$el->name}}"><label>{{$el->name}}</label>
+              <input type="checkbox" name="group[]"  value="{{$el->id}}"><label>{{$el->name}}</label>
             </div>
           @endforeach
 
