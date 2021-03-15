@@ -97,7 +97,6 @@ class ContactController extends Controller{
     return view('update-contact',['data'=>$contact->find($id)], ['group'=>$group->all()]);
   }
 
-
   public function contactUpdateSucces($id, ContactRequest $req){
 
     $contact= Contact::find($id);
