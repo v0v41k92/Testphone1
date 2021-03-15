@@ -3,6 +3,7 @@
   <nav class="my-2 my-md-0 me-md-3"><ul class="topmenu">
     <li><a class="p-2 text-dark" href="/">Главная</a></li>
     <li><a class="p-2 text-dark" href="{{route('contact')}}">Запись</a></li>
+    <li><a class="p-2 text-dark" href="{{route('group')}}">Добавить группу</a></li>
     <li><a class="p-2 text-dark" href="/">Файл<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           <li><a href="/" onclick="createXML();">Экспорт контактов</a></li>
