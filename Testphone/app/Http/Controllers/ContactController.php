@@ -20,6 +20,24 @@ class ContactController extends Controller{
 
   }
 
+  public function allGroup(){
+    $group = new Group;
+    return view('group',['groups'=>$group->all()]);
+  }
+
+  public function groupsubmit(Request $req){
+    $group = new Group;
+    $group->name = $req->input('name');
+    $group->save();
+    return redirect()->route('home')->with('succes','Группа добавлен');
+  }
+
+  public function groupDelete($id){
+    $group = Group::find($id);
+    $group->contacts()->detach($group);
+    $group->Delete();
+    return redirect()->route('home')->with('succes','Группа удалена');
+  }
 
   public function submit(ContactRequest $req){
 
@@ -43,7 +61,8 @@ class ContactController extends Controller{
     $user = Contact::where('name','LIKE',"%{$s}%")
                   ->orWhere('number','LIKE',"%{$s}%")
                   ->orWhere('email','LIKE',"%{$s}%")
-                  -> orderBy('name')->paginate(10);
+                  -> orderBy('name')
+                  ->paginate(25);
     return view ('/Search',compact('user'));
   }
 
@@ -82,6 +101,7 @@ class ContactController extends Controller{
   public function contactUpdateSucces($id, ContactRequest $req){
 
     $contact= Contact::find($id);
+    $contact->groups()->detach($contact);
     $contact->name = $req->input('name');
     $contact->number = $req->input('number');
     $contact->email = $req->input('email');

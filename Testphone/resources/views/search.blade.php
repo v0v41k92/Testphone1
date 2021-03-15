@@ -8,7 +8,7 @@
   <form action="{{route('search')}}" method="get">
   <div class="form-group">
     <input type="text" name="s" id="s" placeholder="Что нужно искать?" class="form-control"></label>
-    <button type="submit" class="btn btn-primary btn-block">Поиск</button>
+    <input type="submit" class="btn btn-primary btn-block"value="Поиск"/>
   </div>
 </form>
 </div>
