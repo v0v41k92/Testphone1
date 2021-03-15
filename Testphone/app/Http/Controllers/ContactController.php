@@ -100,6 +100,7 @@ class ContactController extends Controller{
   public function contactUpdateSucces($id, ContactRequest $req){
 
     $contact= Contact::find($id);
+    $contact->groups()->detach($contact);
     $contact->name = $req->input('name');
     $contact->number = $req->input('number');
     $contact->email = $req->input('email');
